@@ -1,0 +1,27 @@
+#Install devstack
+
+git clone https://git.openstack.org/openstack-dev/devstack
+cd devstack
+git checkout stable/mitaka
+
+[[local|localrc]]
+#OFFLINE=True
+#RECLONE=no
+MYSQL_PASSWORD=admin
+RABBIT_PASSWORD=admin
+SERVICE_TOKEN=token
+SERVICE_PASSWORD=admin
+ADMIN_PASSWORD=admin
+HOST_IP=192.168.56.15
+
+enable_plugin networking-sfc git://git.openstack.org/openstack/networking-sfc stable/mitaka
+NEUTRON_CREATE_INITIAL_NETWORKS=False
+
+disable_service n-net
+enable_service neutron q-svc q-agt q-l3 q-dhcp q-meta
+enable_service nova n-cpu n-novnc
+
+VNCSERVER_PROXYCLIENT_ADDRESS=${HOST_IP}
+VNCSERVER_LISTEN=0.0.0.0
+
+DATABASE_PASSWORD=admin
